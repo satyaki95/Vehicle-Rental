@@ -14,17 +14,17 @@ import ManageBookings from "./pages/vender/ManageBookings";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const isOwnerPath = useLocation().pathname.startsWith("/owner");
+  const isVenderPath = useLocation().pathname.startsWith("/vender");
   return (
     <>
-      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
+      {!isVenderPath && <Navbar setShowLogin={setShowLogin} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/car-details/:id" element={<CarDetails />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/owner" element={<Layout />}>
+        <Route path="/vender" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="add-car" element={<AddCar />} />
           <Route path="manage-cars" element={<ManageCars />} />
@@ -32,7 +32,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      {!isOwnerPath && <Footer />}
+      {!isVenderPath && <Footer />}
     </>
   );
 };
