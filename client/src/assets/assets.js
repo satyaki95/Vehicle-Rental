@@ -96,7 +96,7 @@ export const menuLinks = [
   { name: "My Bookings", path: "/my-bookings" },
 ];
 
-export const ownerfMenuLinks = [
+export const ownerMenuLinks = [
   {
     name: "Dashboard",
     path: "/owner",

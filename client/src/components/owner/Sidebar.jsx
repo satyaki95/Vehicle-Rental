@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { assets, dummyUserData, ownerfMenuLinks } from "../../assets/assets";
+import { assets, dummyUserData, ownerMenuLinks } from "../../assets/assets";
 import { useState } from "react";
 
 const Sidebar = () => {
@@ -48,7 +48,7 @@ const Sidebar = () => {
       <p className="mt-2 text-base max-md:hidden">{user?.name}</p>
 
       <div className="w-full">
-        {ownerfMenuLinks.map((link, index) => (
+        {ownerMenuLinks.map((link, index) => (
           <NavLink
             key={index}
             to={link.path}

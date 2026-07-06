@@ -14,10 +14,10 @@ import ManageBookings from "./pages/owner/ManageBookings";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
-  const isVenderPath = useLocation().pathname.startsWith("/owner");
+  const isOwnerPath = useLocation().pathname.startsWith("/owner");
   return (
     <>
-      {!isVenderPath && <Navbar setShowLogin={setShowLogin} />}
+      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -32,7 +32,7 @@ const App = () => {
         </Route>
       </Routes>
 
-      {!isVenderPath && <Footer />}
+      {!isOwnerPath && <Footer />}
     </>
   );
 };
