@@ -96,28 +96,28 @@ export const menuLinks = [
   { name: "My Bookings", path: "/my-bookings" },
 ];
 
-export const venderMenuLinks = [
+export const ownerfMenuLinks = [
   {
     name: "Dashboard",
-    path: "/vender",
+    path: "/owner",
     icon: dashboardIcon,
     coloredIcon: dashboardIconColored,
   },
   {
     name: "Add Car",
-    path: "/vender/add-car",
+    path: "/owner/add-car",
     icon: addIcon,
     coloredIcon: addIconColored,
   },
   {
     name: "Manage Cars",
-    path: "/vender/manage-cars",
+    path: "/owner/manage-cars",
     icon: carIcon,
     coloredIcon: carIconColored,
   },
   {
     name: "Manage Bookings",
-    path: "/vender/manage-bookings",
+    path: "/owner/manage-bookings",
     icon: listIcon,
     coloredIcon: listIconColored,
   },

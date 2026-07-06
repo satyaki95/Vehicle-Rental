@@ -34,7 +34,7 @@ const Navbar = ({ setShowLogin }) => {
         </div>
 
         <div className="flex max-sm:flex-col items-start sm:items-center gap-6">
-          <button onClick={() => navigate("/vender")} className="cursor-pointer">
+          <button onClick={() => navigate("/owner")} className="cursor-pointer">
             Dashboard
           </button>
           <button

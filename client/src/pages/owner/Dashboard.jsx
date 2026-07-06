@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { assets, dummyDashboardData } from "../../assets/assets";
-import Title from "../../components/vender/Title";
+import Title from "../../components/owner/Title";
 
 const Dashboard = () => {
   const currency = import.meta.env.VITE_CURRENCY;
