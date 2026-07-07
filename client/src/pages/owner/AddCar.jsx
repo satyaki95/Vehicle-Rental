@@ -84,7 +84,7 @@ const AddCar = () => {
             <label>Year</label>
             <input
               type="number"
-              placeholder="2026"
+              placeholder={new Date().getFullYear()}
               required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
               value={car.year}
