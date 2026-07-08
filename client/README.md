@@ -17,3 +17,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Add Testimonial && Newsletter && Footer && Login
 https://prebuiltui.com/components/testimonial
+
+## Start The Server
+npm run dev
