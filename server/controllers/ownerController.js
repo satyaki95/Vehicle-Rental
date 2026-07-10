@@ -33,9 +33,17 @@ export const addCar = async (req, res) => {
     });
 
     // Optimization through imagekit URL transformation
-
-    // w-width=1280 (Width resizing), q-quality=auto (Auto Compression), f-format=webp (Convert to modern format)
-    var optimizedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}/${response.filePath}?tr=w-1280,q-auto,f-webp`;
+    var optimizedImageUrl = imagekit.helper.buildSrc({
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+      src: response.filePath,
+      transformation: [
+        {
+          width: "1280", // Width resizing
+          quality: "auto", // Auto Compression
+          format: "webp", // Convert to modern format
+        },
+      ],
+    });
 
     const image = optimizedImageUrl;
     await Car.create({ ...car, owner: _id, image });
