@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const { objectId } = mongoose.Schema.Types;
+const { ObjectId } = mongoose.Schema.Types;
 
 const carSchema = new mongoose.Schema(
   {
-    owner: { type: objectId, ref: "User" },
+    owner: { type: ObjectId, ref: "User" },
     brand: { type: String, required: true },
     model: { type: String, required: true },
     image: { type: String, required: true },
@@ -21,6 +21,6 @@ const carSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Car = mongoose.model("Car", carSchema);
+const Car = mongoose.model("Vehicle", carSchema);
 
 export default Car;
