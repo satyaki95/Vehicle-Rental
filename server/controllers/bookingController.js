@@ -12,7 +12,7 @@ const checkAvailability = async (car, pickupDate, returnDate) => {
 };
 
 // API to Check Availability of Cars for the given Date and Location
-const checkAvailabilityOfCar = async (req, res) => {
+export const checkAvailabilityOfCar = async (req, res) => {
   try {
     const { location, pickupDate, returnDate } = req.body;
 
