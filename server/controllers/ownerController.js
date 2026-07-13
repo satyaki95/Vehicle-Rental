@@ -5,6 +5,7 @@ import fs from "fs";
 import Car from "../models/Car.js";
 import { toFile } from "@imagekit/nodejs";
 import Booking from "../models/Booking.js";
+import { log } from "console";
 
 // API to Change Role of User
 export const changeRoleToOwner = async (req, res) => {
@@ -192,7 +193,7 @@ export const updateUserImage = async (req, res) => {
 
     const image = optimizedImageUrl;
 
-    await User.findByIdAndUpdate(_id, image);
+    await User.findByIdAndUpdate(_id, {image});
 
     res.json({ success: true, message: "Image Updated" });
   } catch (error) {
