@@ -63,7 +63,7 @@ export const getOwnerCars = async (req, res) => {
     const { _id } = req.user;
     const cars = await Car.find({ owner: _id });
 
-    res.json({ success: false, cars });
+    res.json({ success: true, cars });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -84,9 +84,10 @@ export const toggleCarAvailability = async (req, res) => {
 
     car.isAvailable = !car.isAvailable;
 
+
     await car.save();
 
-    res.json({ success: false, message: "Availability Toggled" });
+    res.json({ success: true, message: "Availability Toggled" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -110,7 +111,7 @@ export const deleteCar = async (req, res) => {
 
     await car.save();
 
-    res.json({ success: false, message: "Car Removed" });
+    res.json({ success: true, message: "Car Removed" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -193,7 +194,7 @@ export const updateUserImage = async (req, res) => {
 
     const image = optimizedImageUrl;
 
-    await User.findByIdAndUpdate(_id, {image});
+    await User.findByIdAndUpdate(_id, { image });
 
     res.json({ success: true, message: "Image Updated" });
   } catch (error) {
