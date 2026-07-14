@@ -80,7 +80,7 @@ export const createBooking = async (req, res) => {
 // API to List User Booking
 export const getUserBookings = async (req, res) => {
   try {
-    const { __id } = req.user;
+    const { _id } = req.user;
     const bookings = await Booking.find({ user: _id })
       .populate("car")
       .sort({ createdAt: -1 });
@@ -114,7 +114,8 @@ export const getOwnerBookings = async (req, res) => {
 // API to Change Booking Status
 export const changeBookingStatus = async (req, res) => {
   try {
-    const { __id } = req.user;
+    const { _id } = req.user;
+
     const { bookingId, status } = req.body;
 
     const booking = await Booking.findById(bookingId);

@@ -10,7 +10,7 @@ const ManageBookings = () => {
 
   const fetchOwnerBookings = async () => {
     try {
-      const { data } = await axios.get("/api/booking/owner");
+      const { data } = await axios.get("/api/bookings/owner");
 
       if (data.success) {
         setBookings(data.bookings);
@@ -24,7 +24,7 @@ const ManageBookings = () => {
 
   const changeBookingStatus = async (bookingId, status) => {
     try {
-      const { data } = await axios.post("/api/booking/change-status", {
+      const { data } = await axios.post("/api/bookings/change-status", {
         bookingId,
         status,
       });
