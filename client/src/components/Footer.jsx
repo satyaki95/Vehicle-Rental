@@ -1,16 +1,46 @@
 import { assets } from "../assets/assets";
+import { motion } from "motion/react";
 
 const Footer = () => {
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-60 text-sm text-gray-500">
-      <div className="flex flex-wrap justify-between items-start gap-8 pb-6 border-borderColor border-b">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="px-6 md:px-16 lg:px-24 xl:px-32 mt-60 text-sm text-gray-500"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="flex flex-wrap justify-between items-start gap-8 pb-6 border-borderColor border-b"
+      >
         <div>
-          <img alt="logo" className="h-8 md:h-9" src={assets.logo} />
-          <p className="max-w-80 mt-3">
+          <motion.img
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            alt="logo"
+            className="h-8 md:h-9"
+            src={assets.logo}
+          />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="max-w-80 mt-3"
+          >
             Premium car rental service with a wide selection of luxury and
             everyday vehicles for all your driving needs.
-          </p>
-          <div className="flex items-center gap-3 mt-6">
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="flex items-center gap-3 mt-6"
+          >
             <a href="#">
               <img className="w-5 h-5" alt="" src={assets.facebook_logo} />
             </a>
@@ -23,9 +53,14 @@ const Footer = () => {
             <a href="#">
               <img className="w-5 h-5" alt="" src={assets.gmail_logo} />
             </a>
-          </div>
+          </motion.div>
         </div>
-        <div className="flex flex-wrap justify-between w-1/2 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex flex-wrap justify-between w-1/2 gap-8"
+        >
           <div>
             <h2 className="text-base font-medium text-gray-800 uppercase">
               Quick Links
@@ -75,9 +110,15 @@ const Footer = () => {
               <li>info@example.com</li>
             </ul>
           </div>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-2 items-center justify-between py-5">
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="flex flex-col md:flex-row gap-2 items-center justify-between py-5"
+      >
         <p>© {new Date().getFullYear()} Brand. All rights reserved.</p>
         <ul className="flex items-center gap-4">
           <li>
@@ -92,8 +133,8 @@ const Footer = () => {
             <a href="#">Cookies</a>
           </li>
         </ul>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
