@@ -5,13 +5,18 @@ import { useAppContext } from "../../context/AppContext";
 import { useEffect } from "react";
 
 const Layout = () => {
-  const { isOwner, navigate } = useAppContext();
+  const { isOwner, isAuthLoading, navigate } = useAppContext();
 
   useEffect(() => {
-    if (!isOwner) {
+    if (!isAuthLoading && !isOwner) {
       navigate("/");
     }
-  }, [isOwner]);
+  }, [isAuthLoading, isOwner]);
+
+  if (isAuthLoading) {
+    return <div className="p-8">Loading...</div>;
+  }
+
   return (
     <div className="flex flex-col">
       <NavbarOwner />

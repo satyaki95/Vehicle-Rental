@@ -3,11 +3,13 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { setShowLogin, axios, setToken, navigate } = useAppContext();
+  const { setShowLogin, axios, setToken, navigate, setIsOwner } =
+    useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const onSubmitHandler = async (event) => {
     try {
@@ -20,10 +22,18 @@ const Login = () => {
       });
 
       if (data.success) {
-        navigate("/");
-        setToken(data.token);
-        localStorage.setItem("token", data.token);
-        setShowLogin(false);
+        if (data.role === "owner") {
+          setIsOwner(true);
+          navigate("/owner");
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          setShowLogin(false);
+        } else {
+          navigate("/");
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          setShowLogin(false);
+        }
       } else {
         toast.error(data.message);
       }

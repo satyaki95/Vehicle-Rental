@@ -7,18 +7,6 @@ import { toFile } from "@imagekit/nodejs";
 import Booking from "../models/Booking.js";
 import { log } from "console";
 
-// API to Change Role of User
-export const changeRoleToOwner = async (req, res) => {
-  try {
-    const { _id } = req.user;
-    await User.findByIdAndUpdate(_id, { role: "owner" });
-    res.json({ success: true, message: "Now you can list vehicle" });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
-  }
-};
-
 //  API to list vehicle
 export const addCar = async (req, res) => {
   try {
@@ -83,7 +71,6 @@ export const toggleCarAvailability = async (req, res) => {
     }
 
     car.isAvailable = !car.isAvailable;
-
 
     await car.save();
 
