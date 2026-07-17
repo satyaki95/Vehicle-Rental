@@ -9,6 +9,7 @@ const AddCar = () => {
 
   const [image, setImage] = useState(null);
   const [car, setCar] = useState({
+    type: "",
     brand: "",
     model: "",
     year: 0,
@@ -43,6 +44,7 @@ const AddCar = () => {
         toast.success(data.message);
         setImage(null);
         setCar({
+          type: "",
           brand: "",
           model: "",
           year: 0,
@@ -94,7 +96,20 @@ const AddCar = () => {
         </div>
 
         {/* Car Brand & Model */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col w-full">
+            <label>Vehicle Type</label>
+            <select
+              onChange={(e) => setCar({ ...car, type: e.target.value })}
+              value={car.type}
+              className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
+              required
+            >
+              <option value="">Select a type</option>
+              <option value="Bike">Bike</option>
+              <option value="Car">Car</option>
+            </select>
+          </div>
           <div className="flex flex-col w-full">
             <label>Brand</label>
             <input
@@ -153,10 +168,21 @@ const AddCar = () => {
               value={car.category}
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
             >
-              <option value="">Select a category</option>
-              <option value="Sedan">Sedan</option>
-              <option value="SUV">SUV</option>
-              <option value="Van">Van</option>
+              {car.type === "Car" ? (
+                <>
+                  <option value="">Select a category</option>
+                  <option value="Sedan">Sedan</option>
+                  <option value="SUV">SUV</option>
+                  <option value="Van">Van</option>
+                </>
+              ) : (
+                <>
+                  <option value="">Select a category</option>
+                  <option value="Retro">Retro</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Naked">Naked</option>
+                </>
+              )}
             </select>
           </div>
         </div>

@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const { ObjectId } = mongoose.Schema.Types;
 
 const carSchema = new mongoose.Schema(
   {
     owner: { type: ObjectId, ref: "User" },
+    type: { type: String, required: true },
     brand: { type: String, required: true },
     model: { type: String, required: true },
     image: { type: String, required: true },

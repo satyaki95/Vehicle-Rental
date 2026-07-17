@@ -9,13 +9,14 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [role, setRole] = useState("");
 
   const onSubmitHandler = async (event) => {
     try {
       event.preventDefault();
 
       const { data } = await axios.post(`/api/user/${state}`, {
+        role,
         name,
         email,
         password,
@@ -58,6 +59,16 @@ const Login = () => {
         </p>
         {state === "register" && (
           <div className="w-full">
+            <p>Role</p>
+            <select
+              onChange={(e) => setRole(e.target.value)}
+              className="border border-gray-200 rounded w-full p-2 mb-3  outline-primary"
+              required
+            >
+              <option value="">Select Role</option>
+              <option value="user">User</option>
+              <option value="owner">Owner</option>
+            </select>
             <p>Name</p>
             <input
               onChange={(e) => setName(e.target.value)}

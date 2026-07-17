@@ -39,6 +39,17 @@ const CarDetails = () => {
     setCar(cars.find((car) => car._id === id));
   }, [cars, id]);
 
+  const features =
+    car?.type?.toLowerCase() === "bike"
+      ? [
+          "Bluetooth",
+          "GPS",
+          "Crush Control",
+          "Dual-channel ABS",
+          "Traction Control",
+        ]
+      : ["360 Camera", "Bluetooth", "GPS", "Heated Seats", "Rear View Mirror"];
+
   return car ? (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-16">
       <button
@@ -52,7 +63,6 @@ const CarDetails = () => {
         />
         Back to all cars
       </button>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         {/*Left: car Image & details */}
         <motion.div
@@ -126,13 +136,7 @@ const CarDetails = () => {
             <div>
               <h1 className="text-xl font-medium mb-3">Features</h1>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {[
-                  "360 Camera",
-                  "Bluetooth",
-                  "GPS",
-                  "Heated Seats",
-                  "Rear View Mirror",
-                ].map((item) => (
+                {features.map((item) => (
                   <li key={item} className="flex items-center text-gray-500">
                     <img src={assets.check_icon} className="h-4 mr-2" />
                     {item}
@@ -161,9 +165,9 @@ const CarDetails = () => {
               value={pickupDate}
               onChange={(e) => setPickupDate(e.target.value)}
               className="border border-borderColor px-3 py-2 rounded-lg"
-              type="date"
+              type="datetime-local"
               id="pickup-date"
-              min={new Date().toISOString().split("T")[0]}
+              min={new Date().toISOString().slice(0, 16)}
               required
             />
           </div>
