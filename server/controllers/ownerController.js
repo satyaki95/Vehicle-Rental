@@ -105,6 +105,81 @@ export const deleteCar = async (req, res) => {
   }
 };
 
+// API to get owner car by id
+export const getOwnerCarById = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { carId } = req.params;
+    const car = await Car.findById(carId);
+
+    if (!car) {
+      return res.json({ success: false, message: "Car not found" });
+    }
+
+    if (car.owner.toString() !== _id.toString()) {
+      return res.json({ success: false, message: "Unauthorized" });
+    }
+
+    res.json({ success: true, car });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// API to update owner car
+export const updateCar = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { carId } = req.params;
+    const car = await Car.findById(carId);
+
+    if (!car) {
+      return res.json({ success: false, message: "Car not found" });
+    }
+
+    if (car.owner.toString() !== _id.toString()) {
+      return res.json({ success: false, message: "Unauthorized" });
+    }
+
+    let updatedData = {};
+
+    if (req.body.carData) {
+      updatedData = JSON.parse(req.body.carData);
+    }
+
+    if (req.file) {
+      const imageFile = req.file;
+      const filebuffer = fs.readFileSync(imageFile.path);
+      const response = await imagekit.files.upload({
+        file: await toFile(filebuffer),
+        fileName: imageFile.originalname,
+        folder: "/vehicles",
+      });
+
+      updatedData.image = imagekit.helper.buildSrc({
+        urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+        src: response.filePath,
+        transformation: [
+          {
+            width: "1280",
+            quality: "auto",
+            format: "webp",
+          },
+        ],
+      });
+    }
+
+    Object.assign(car, updatedData);
+    await car.save();
+
+    res.json({ success: true, message: "Car Updated" });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 // API to get Dashboard Data
 export const getDashBoardData = async (req, res) => {
   try {

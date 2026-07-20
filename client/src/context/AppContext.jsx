@@ -14,6 +14,7 @@ export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
@@ -30,9 +31,11 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
+        setIsAdmin(data.user.role === "admin");
       } else {
         setUser(null);
         setIsOwner(false);
+        setIsAdmin(false);
         localStorage.removeItem("token");
         axios.defaults.headers.common["Authorization"] = "";
         navigate("/");
@@ -41,6 +44,7 @@ export const AppProvider = ({ children }) => {
       toast.error(error.message);
       setUser(null);
       setIsOwner(false);
+      setIsAdmin(false);
       localStorage.removeItem("token");
       axios.defaults.headers.common["Authorization"] = "";
       navigate("/");
@@ -65,6 +69,7 @@ export const AppProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setIsOwner(false);
+    setIsAdmin(false);
     axios.defaults.headers.common["Authorization"] = "";
     navigate("/");
     toast.success("You have been logged out");
@@ -102,6 +107,8 @@ export const AppProvider = ({ children }) => {
     setToken,
     isOwner,
     setIsOwner,
+    isAdmin,
+    setIsAdmin,
     isAuthLoading,
     fetchUser,
     showLogin,

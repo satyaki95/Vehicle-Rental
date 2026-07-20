@@ -61,7 +61,7 @@ const CarDetails = () => {
           alt="Arrow Icon"
           className="rotate-180 opacity-65"
         />
-        Back to all cars
+        Back to all cars{console.log(car)}
       </button>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         {/*Left: car Image & details */}

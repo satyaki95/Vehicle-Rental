@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { setShowLogin, axios, setToken, navigate, setIsOwner } =
+  const { setShowLogin, axios, setToken, navigate, setIsOwner, setIsAdmin } =
     useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
@@ -25,11 +25,21 @@ const Login = () => {
       if (data.success) {
         if (data.role === "owner") {
           setIsOwner(true);
+          setIsAdmin(false);
           navigate("/owner");
           setToken(data.token);
           localStorage.setItem("token", data.token);
           setShowLogin(false);
+        } else if (data.role === "admin") {
+          setIsOwner(false);
+          setIsAdmin(true);
+          navigate("/admin");
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          setShowLogin(false);
         } else {
+          setIsOwner(false);
+          setIsAdmin(false);
           navigate("/");
           setToken(data.token);
           localStorage.setItem("token", data.token);

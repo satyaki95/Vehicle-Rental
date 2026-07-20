@@ -54,6 +54,7 @@ export const createBooking = async (req, res) => {
     const carData = await Car.findById(car);
 
     // Calculate Price Based on PickupDate and Return Date
+    console.log("pickupDate->", pickupDate);
 
     const picked = new Date(pickupDate);
     const returned = new Date(returnDate);

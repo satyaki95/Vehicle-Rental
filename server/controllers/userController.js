@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
     });
 
     const token = generateToken(user._id.toString());
-    res.json({ success: true, token });
+    res.json({ success: true, token, role: user.role });
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });
