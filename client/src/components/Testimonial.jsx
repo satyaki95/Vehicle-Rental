@@ -10,7 +10,7 @@ const Testimonial = () => {
       image: assets.testimonial_image_1,
       rating: 5,
       testimonial:
-        "I've rented cars from various companies, but the experience with CarRental was exceptional.",
+        "I've rented vehicles from various companies, but the experience with VehicleRental was exceptional.",
     },
     {
       name: "John Smith",
@@ -18,7 +18,7 @@ const Testimonial = () => {
       image: assets.testimonial_image_2,
       rating: 4,
       testimonial:
-        "CarRental made my trip so much easier. The car was delivered right to my door, and the customer service was fantastic!",
+        "VehicleRental made my trip so much easier. The vehicle was delivered right to my door, and the customer service was fantastic!",
     },
     {
       name: "Ava Johnson",
@@ -26,7 +26,7 @@ const Testimonial = () => {
       image: assets.testimonial_image_3,
       rating: 5,
       testimonial:
-        "I highly recommend CarRental! Their fleet is amazing, and I always feel like I'm getting the best deal with excellent service.",
+        "I highly recommend VehicleRental! Their fleet is amazing, and I always feel like I'm getting the best deal with excellent service.",
     },
   ];
 
@@ -50,7 +50,7 @@ const Testimonial = () => {
     <div className="py-28 px-6 md:px-16 lg:px-24 xl:px-44">
       <Title
         title="What Our Customers Say"
-        subTitle="Discover why discerning travelers choose StayVenture for their luxury accommodation around the world."
+        subTitle="Discover why discerning travelers choose StayVenture for their vehicle accommodation around the world."
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18">
         {testimonials.map((testimonial, index) => (

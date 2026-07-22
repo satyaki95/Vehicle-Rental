@@ -1,38 +1,62 @@
 import Booking from "../models/Booking.js";
-import Car from "../models/Car.js";
+import Vehicle from "../models/Vehicle.js";
 
-//  Function to Check Availability of car for a given Date
-const checkAvailability = async (car, pickupDate, returnDate) => {
+const calculatePrice = (vehicle, pickupDate, returnDate, rentalDuration) => {
+  const pickup = new Date(pickupDate);
+  const returned = new Date(returnDate);
+  const totalDays = Math.max(
+    1,
+    Math.ceil((returned - pickup) / (1000 * 60 * 60 * 24)),
+  );
+
+  switch (rentalDuration) {
+    case "weekly":
+      return (
+        vehicle.pricePerWeek || vehicle.pricePerDay * Math.ceil(totalDays / 7)
+      );
+    case "monthly":
+      return (
+        vehicle.pricePerMonth || vehicle.pricePerDay * Math.ceil(totalDays / 30)
+      );
+    default:
+      return vehicle.pricePerDay * totalDays;
+  }
+};
+
+// Function to Check Availability of vehicle for a given Date
+const checkAvailability = async (vehicle, pickupDate, returnDate) => {
   const bookings = await Booking.find({
-    car,
+    vehicle,
     pickupDate: { $lte: returnDate },
     returnDate: { $gte: pickupDate },
   });
   return bookings.length === 0;
 };
 
-// API to Check Availability of Cars for the given Date and Location
-export const checkAvailabilityOfCar = async (req, res) => {
+// API to Check Availability of Vehicles for the given Date and Location
+export const checkAvailabilityOfVehicle = async (req, res) => {
   try {
     const { location, pickupDate, returnDate } = req.body;
 
-    // Fetch all Available cars for the given location
-    const cars = await Car.find({ location, isAvailable: true });
+    // Fetch all Available vehicles for the given location
+    const vehicles = await Vehicle.find({ location, isAvailable: true });
 
-    // Check Car Availability for the given date range Using promise
-    const availableCardsPromise = cars.map(async (car) => {
+    // Check Vehicle Availability for the given date range Using promise
+    const availableVehiclesPromise = vehicles.map(async (vehicle) => {
       const isAvailable = await checkAvailability(
-        car._id,
+        vehicle._id,
         pickupDate,
         returnDate,
       );
-      return { ...car._doc, isAvailable: isAvailable };
+      return { ...vehicle._doc, isAvailable: isAvailable };
     });
 
-    let availableCars = await Promise.all(availableCardsPromise);
-    availableCars = availableCars.filter((car) => car.isAvailable === true);
+    let availableVehicles = await Promise.all(availableVehiclesPromise);
+    availableVehicles = availableVehicles.filter(
+      (vehicle) => vehicle.isAvailable === true,
+    );
 
-    res.json({ success: true, availableCars });
+    res.json({ success: true, availableVehicles });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -43,32 +67,47 @@ export const checkAvailabilityOfCar = async (req, res) => {
 export const createBooking = async (req, res) => {
   try {
     const { _id } = req.user;
-    const { car, pickupDate, returnDate } = req.body;
+    const {
+      vehicle,
+      pickupDate,
+      returnDate,
+      rentalDuration = "daily",
+    } = req.body;
+    const vehicleId = vehicle;
 
-    const isAvailable = await checkAvailability(car, pickupDate, returnDate);
+    const isAvailable = await checkAvailability(
+      vehicleId,
+      pickupDate,
+      returnDate,
+    );
 
     if (!isAvailable) {
-      return res.json({ success: false, message: "Car is not available" });
+      return res.json({ success: false, message: "Vehicle is not available" });
     }
 
-    const carData = await Car.findById(car);
+    const vehicleData = await Vehicle.findById(vehicleId);
 
-    // Calculate Price Based on PickupDate and Return Date
-    console.log("pickupDate->", pickupDate);
+    if (!vehicleData || !vehicleData.isAvailable || !vehicleData.isApproved) {
+      return res.json({
+        success: false,
+        message: "Vehicle is not available for booking",
+      });
+    }
 
-    const picked = new Date(pickupDate);
-    const returned = new Date(returnDate);
-
-    const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24));
-
-    const price = carData.pricePerDay * noOfDays;
+    const price = calculatePrice(
+      vehicleData,
+      pickupDate,
+      returnDate,
+      rentalDuration,
+    );
 
     await Booking.create({
-      car,
-      owner: carData.owner,
+      vehicle: vehicleId,
+      owner: vehicleData.owner,
       user: _id,
       pickupDate,
       returnDate,
+      rentalDuration,
       price,
     });
 
@@ -84,7 +123,7 @@ export const getUserBookings = async (req, res) => {
   try {
     const { _id } = req.user;
     const bookings = await Booking.find({ user: _id })
-      .populate("car")
+      .populate("vehicle")
       .sort({ createdAt: -1 });
 
     res.json({ success: true, bookings });
@@ -102,7 +141,7 @@ export const getOwnerBookings = async (req, res) => {
     }
 
     const bookings = await Booking.find({ owner: req.user._id })
-      .populate("car user")
+      .populate("vehicle user")
       .select("-user.password")
       .sort({ createdAt: -1 });
 

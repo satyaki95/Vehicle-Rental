@@ -22,7 +22,10 @@ const ManageBookings = () => {
 
   const changeBookingStatus = async (bookingId, status) => {
     try {
-      const { data } = await axios.post("/api/admin/change-booking-status", { bookingId, status });
+      const { data } = await axios.post("/api/admin/change-booking-status", {
+        bookingId,
+        status,
+      });
       if (data.success) {
         toast.success(data.message);
         fetchAdminBookings();
@@ -49,7 +52,7 @@ const ManageBookings = () => {
         <table className="w-full border-collapse text-left text-sm text-gray-600">
           <thead className="text-gray-500">
             <tr>
-              <th className="p-3 font-medium">Car</th>
+              <th className="p-3 font-medium">Vehicle</th>
               <th className="p-3 font-medium max-md:hidden">User</th>
               <th className="p-3 font-medium">Date Range</th>
               <th className="p-3 font-medium">Total</th>
@@ -57,24 +60,51 @@ const ManageBookings = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking, index) => (
-              <tr key={index} className="border-t border-borderColor text-gray-500">
-                <td className="p-3 flex items-center gap-3">
-                  <img src={booking.car?.image} className="h-12 w-12 aspect-square rounded-md object-cover" />
-                  <p className="font-medium max-md:hidden">{booking.car?.brand} {booking.car?.model}</p>
-                </td>
-                <td className="p-3 max-md:hidden">{booking.user?.name || "Unknown"}</td>
-                <td className="p-3">{booking.pickupDate?.split("T")[0]} to {booking.returnDate?.split("T")[0]}</td>
-                <td className="p-3">{currency}{booking.price}</td>
-                <td className="p-3">
-                  <select onChange={(e) => changeBookingStatus(booking._id, e.target.value)} value={booking.status} className="px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none">
-                    <option value="pending">Pending</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="confirmed">Confirmed</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
+            {bookings.map((booking, index) => {
+              const vehicle = booking.vehicle;
+              return (
+                <tr
+                  key={index}
+                  className="border-t border-borderColor text-gray-500"
+                >
+                  <td className="p-3 flex items-center gap-3">
+                    {vehicle && (
+                      <img
+                        src={vehicle.image}
+                        className="h-12 w-12 aspect-square rounded-md object-cover"
+                      />
+                    )}
+                    <p className="font-medium max-md:hidden">
+                      {vehicle ? `${vehicle.brand} ${vehicle.model}` : "N/A"}
+                    </p>
+                  </td>
+                  <td className="p-3 max-md:hidden">
+                    {booking.user?.name || "Unknown"}
+                  </td>
+                  <td className="p-3">
+                    {booking.pickupDate?.split("T")[0]} to{" "}
+                    {booking.returnDate?.split("T")[0]}
+                  </td>
+                  <td className="p-3">
+                    {currency}
+                    {booking.price}
+                  </td>
+                  <td className="p-3">
+                    <select
+                      onChange={(e) =>
+                        changeBookingStatus(booking._id, e.target.value)
+                      }
+                      value={booking.status}
+                      className="px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="confirmed">Confirmed</option>
+                    </select>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

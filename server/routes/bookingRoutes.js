@@ -1,7 +1,7 @@
 import express from "express";
 import {
   changeBookingStatus,
-  checkAvailabilityOfCar,
+  checkAvailabilityOfVehicle,
   createBooking,
   getOwnerBookings,
   getUserBookings,
@@ -10,7 +10,7 @@ import { protect } from "../middleware/auth.js";
 
 const bookingRouter = express.Router();
 
-bookingRouter.post("/check-availability", checkAvailabilityOfCar);
+bookingRouter.post("/check-availability", checkAvailabilityOfVehicle);
 bookingRouter.post("/create", protect, createBooking);
 bookingRouter.get("/user", protect, getUserBookings);
 bookingRouter.get("/owner", protect, getOwnerBookings);

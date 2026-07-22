@@ -1,13 +1,13 @@
 import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
-import CarCard from "./CarCard";
+import VehicleCard from "./VehicleCard";
 import Title from "./Title";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 
 const FeaturedSection = () => {
   const navigate = useNavigate();
-  const { cars } = useAppContext();
+  const { vehicles } = useAppContext();
 
   return (
     <motion.div
@@ -23,7 +23,7 @@ const FeaturedSection = () => {
       >
         <Title
           title="Featured Vehicles"
-          subTitle="Explore our selection of premium vehicles for your next adventure."
+          subTitle="Explore our selection of vehicles for your next adventure."
         />
       </motion.div>
 
@@ -33,14 +33,14 @@ const FeaturedSection = () => {
         transition={{ duration: 1, delay: 0.5 }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18"
       >
-        {cars.slice(0, 6).map((car) => (
+        {vehicles.slice(0, 6).map((vehicle) => (
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            key={car._id}
+            key={vehicle._id}
           >
-            <CarCard car={car} />
+            <VehicleCard vehicle={vehicle} />
           </motion.div>
         ))}
       </motion.div>
@@ -50,12 +50,12 @@ const FeaturedSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.6 }}
         onClick={() => {
-          navigate("/cars");
+          navigate("/vehicles");
           scrollTo(0, 0);
         }}
         className="flex items-center justify-center gap-2 px-6 py-2 border border-borderColor hover:bg-gray-50 rounded-md mt-18 cursor-pointer"
       >
-        Explore all cars <img src={assets.arrow_icon} alt="arrow" />
+        Explore all vehicles <img src={assets.arrow_icon} alt="arrow" />
       </motion.button>
     </motion.div>
   );

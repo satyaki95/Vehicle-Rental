@@ -20,7 +20,7 @@ export const AppProvider = ({ children }) => {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
 
-  const [cars, setCars] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
 
   // Function to check if user is logged in
   const fetchUser = async () => {
@@ -53,11 +53,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Function to fetch all car from the server
-  const fetchCars = async () => {
+  // Function to fetch all vehicles from the server
+  const fetchVehicles = async () => {
     try {
-      const { data } = await axios.get("/api/user/cars");
-      data.success ? setCars(data.cars) : toast.error(data.message);
+      const { data } = await axios.get("/api/user/vehicles");
+      const vehicleData = data.vehicles;
+      data.success ? setVehicles(vehicleData) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
@@ -86,7 +87,7 @@ export const AppProvider = ({ children }) => {
       setIsAuthLoading(false);
     }
 
-    fetchCars();
+    fetchVehicles();
   }, []);
 
   // UseEffect to fetch user data when token is available
@@ -114,9 +115,9 @@ export const AppProvider = ({ children }) => {
     showLogin,
     setShowLogin,
     logout,
-    fetchCars,
-    cars,
-    setCars,
+    fetchVehicles,
+    vehicles,
+    setVehicles,
     pickupDate,
     setPickupDate,
     returnDate,

@@ -8,7 +8,8 @@ const Dashboard = () => {
   const { axios, isOwner, currency } = useAppContext();
 
   const [data, setData] = useState({
-    totalCars: 0,
+    totalVehicles: 0,
+
     totalBookings: 0,
     pendingBookings: 0,
     completedBookings: 0,
@@ -18,8 +19,8 @@ const Dashboard = () => {
 
   const dashboardCards = [
     {
-      title: "Total Cars",
-      value: data.totalCars,
+      title: "Total Vehicles",
+      value: data.totalVehicles,
       icon: assets.carIconColored,
     },
     {
@@ -62,8 +63,8 @@ const Dashboard = () => {
   return (
     <div className="px-4 pt-10 md:px-10 flex-1">
       <Title
-        title="Admin Dashboard"
-        subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
+        title="Owner Dashboard"
+        subTitle="Monitor overall performance including total vehicles, bookings, revenue, and recent activities"
       />
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl">
@@ -91,34 +92,40 @@ const Dashboard = () => {
 
           <p className="text-gray-500">Latest customer bookings</p>
 
-          {data.recentBookings.map((booking, index) => (
-            <div key={index} className="mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-                  <img src={assets.listIconColored} className="h-5 w-5" />
+          {data.recentBookings.map((booking, index) => {
+            const vehicle = booking.vehicle;
+            return (
+              <div
+                key={index}
+                className="mt-4 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                    <img src={assets.listIconColored} className="h-5 w-5" />
+                  </div>
+
+                  <div>
+                    <p>
+                      {vehicle ? `${vehicle.brand} ${vehicle.model}` : "N/A"}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {booking.createdAt.split("T")[0]}
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <p>
-                    {booking.car.brand} {booking.car.model}
-                  </p>
+                <div className="flex items-center gap-2 font-medium">
                   <p className="text-sm text-gray-500">
-                    {booking.createdAt.split("T")[0]}
+                    {currency}
+                    {booking.price}
+                  </p>
+                  <p className="px-3 py-0.5 border border-borderColor rounded-full text-sm">
+                    {booking.status}
                   </p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 font-medium">
-                <p className="text-sm text-gray-500">
-                  {currency}
-                  {booking.price}
-                </p>
-                <p className="px-3 py-0.5 border border-borderColor rounded-full text-sm">
-                  {booking.status}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* monthly revenue */}

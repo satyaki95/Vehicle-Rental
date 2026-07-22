@@ -31,8 +31,8 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="max-w-80 mt-3"
           >
-            Premium car rental service with a wide selection of luxury and
-            everyday vehicles for all your driving needs.
+            Vehicle rental service with a wide selection of everyday vehicles
+            for all your driving needs.
           </motion.p>
 
           <motion.div
@@ -70,10 +70,10 @@ const Footer = () => {
                 <a href="/">Home</a>
               </li>
               <li>
-                <a href="#">Browse Cars</a>
+                <a href="#">Browse vehicle</a>
               </li>
               <li>
-                <a href="#">List Your Car</a>
+                <a href="#">List Your Vehicle</a>
               </li>
               <li>
                 <a href="#">About Us</a>
@@ -104,8 +104,8 @@ const Footer = () => {
               Contact
             </h2>
             <ul className="mt-3 flex flex-col gap-1.5">
-              <li>1234 Luxury Drive</li>
-              <li>San Francisco, CA 94107</li>
+              <li>1234 Vehicle Drive</li>
+              <li>Kolkata, West Bengal 700091</li>
               <li>+91 234 567890</li>
               <li>info@example.com</li>
             </ul>

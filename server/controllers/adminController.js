@@ -1,4 +1,4 @@
-import Car from "../models/Car.js";
+import Vehicle from "../models/Vehicle.js";
 import Booking from "../models/Booking.js";
 import User from "../models/User.js";
 import imagekit from "../configs/imageKit.js";
@@ -17,8 +17,10 @@ export const getAdminDashboardData = async (req, res) => {
   try {
     if (!ensureAdmin(req, res)) return;
 
-    const cars = await Car.find({});
-    const bookings = await Booking.find({}).populate("car user owner").sort({ createdAt: -1 });
+    const vehicles = await Vehicle.find({});
+    const bookings = await Booking.find({})
+      .populate("vehicle user owner")
+      .sort({ createdAt: -1 });
 
     const pendingBookings = await Booking.find({ status: "pending" });
     const completedBookings = await Booking.find({ status: "confirmed" });
@@ -30,7 +32,8 @@ export const getAdminDashboardData = async (req, res) => {
     res.json({
       success: true,
       dashboardData: {
-        totalCars: cars.length,
+        totalVehicles: vehicles.length,
+
         totalBookings: bookings.length,
         pendingBookings: pendingBookings.length,
         completedBookings: completedBookings.length,
@@ -44,31 +47,70 @@ export const getAdminDashboardData = async (req, res) => {
   }
 };
 
-export const getAdminCars = async (req, res) => {
+export const getAdminVehicles = async (req, res) => {
   try {
     if (!ensureAdmin(req, res)) return;
 
-    const cars = await Car.find({}).populate("owner").sort({ createdAt: -1 });
-    res.json({ success: true, cars });
+    const vehicles = await Vehicle.find({})
+      .populate("owner")
+      .sort({ createdAt: -1 });
+    res.json({ success: true, vehicles });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
   }
 };
 
-export const toggleCarAvailability = async (req, res) => {
+export const updateVehicleApproval = async (req, res) => {
   try {
     if (!ensureAdmin(req, res)) return;
 
-    const { carId } = req.body;
-    const car = await Car.findById(carId);
+    const { vehicleId, isApproved } = req.body;
+    const id = vehicleId;
+    const vehicle = await Vehicle.findById(id);
 
-    if (!car) {
-      return res.json({ success: false, message: "Car not found" });
+    if (!vehicle) {
+      return res.json({ success: false, message: "Vehicle not found" });
     }
 
-    car.isAvailable = !car.isAvailable;
-    await car.save();
+    vehicle.isApproved = Boolean(isApproved);
+    await vehicle.save();
+
+    res.json({ success: true, message: "Vehicle approval updated" });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const getAdminUsers = async (req, res) => {
+  try {
+    if (!ensureAdmin(req, res)) return;
+
+    const users = await User.find({ role: { $ne: "admin" } }).sort({
+      createdAt: -1,
+    });
+    res.json({ success: true, users });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const toggleVehicleAvailability = async (req, res) => {
+  try {
+    if (!ensureAdmin(req, res)) return;
+
+    const { vehicleId } = req.body;
+    const id = vehicleId;
+    const vehicle = await Vehicle.findById(id);
+
+    if (!vehicle) {
+      return res.json({ success: false, message: "Vehicle not found" });
+    }
+
+    vehicle.isAvailable = !vehicle.isAvailable;
+    await vehicle.save();
 
     res.json({ success: true, message: "Availability Toggled" });
   } catch (error) {
@@ -77,22 +119,23 @@ export const toggleCarAvailability = async (req, res) => {
   }
 };
 
-export const deleteCar = async (req, res) => {
+export const deleteVehicle = async (req, res) => {
   try {
     if (!ensureAdmin(req, res)) return;
 
-    const { carId } = req.body;
-    const car = await Car.findById(carId);
+    const { vehicleId } = req.body;
+    const id = vehicleId;
+    const vehicle = await Vehicle.findById(id);
 
-    if (!car) {
-      return res.json({ success: false, message: "Car not found" });
+    if (!vehicle) {
+      return res.json({ success: false, message: "Vehicle not found" });
     }
 
-    car.owner = null;
-    car.isAvailable = false;
-    await car.save();
+    vehicle.owner = null;
+    vehicle.isAvailable = false;
+    await vehicle.save();
 
-    res.json({ success: true, message: "Car Removed" });
+    res.json({ success: true, message: "Vehicle Removed" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -104,7 +147,7 @@ export const getAdminBookings = async (req, res) => {
     if (!ensureAdmin(req, res)) return;
 
     const bookings = await Booking.find({})
-      .populate("car user owner")
+      .populate("vehicle user owner")
       .sort({ createdAt: -1 });
 
     res.json({ success: true, bookings });

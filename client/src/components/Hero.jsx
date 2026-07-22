@@ -12,7 +12,7 @@ const Hero = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     navigate(
-      "/cars?pickupLocation=" +
+      "/vehicles?pickupLocation=" +
         pickupLocation +
         "&pickupDate=" +
         pickupDate +
@@ -34,7 +34,7 @@ const Hero = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-4xl md:text-5xl font-semibold"
       >
-        Luxury cars on Rent
+        Vehicle on Rent
       </motion.h1>
 
       <motion.form
@@ -108,7 +108,7 @@ const Hero = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}
         src={assets.main_car}
-        alt="car"
+        alt="vehicle"
         className="max-h-74"
       />
     </motion.div>

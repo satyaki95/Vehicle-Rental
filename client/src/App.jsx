@@ -2,19 +2,19 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
-import CarDetails from "./pages/CarDetails";
-import Cars from "./pages/Cars";
+import VehicleDetails from "./pages/VehicleDetails";
+import Vehicles from "./pages/Vehicles";
 import MyBookings from "./pages/MyBookings";
 import Footer from "./components/Footer";
 import OwnerLayout from "./pages/owner/Layout";
 import OwnerDashboard from "./pages/owner/Dashboard";
-import AddCar from "./pages/owner/AddCar";
-import EditCar from "./pages/owner/EditCar";
-import OwnerManageCars from "./pages/owner/ManageCars";
+import AddVehicle from "./pages/owner/AddVehicle";
+import EditVehicle from "./pages/owner/EditVehicle";
+import OwnerManageVehicles from "./pages/owner/ManageVehicles";
 import OwnerManageBookings from "./pages/owner/ManageBookings";
 import AdminLayout from "./pages/admin/Layout";
 import AdminDashboard from "./pages/admin/Dashboard";
-import AdminManageCars from "./pages/admin/ManageCars";
+import AdminManageVehicles from "./pages/admin/ManageVehicles";
 import AdminManageBookings from "./pages/admin/ManageBookings";
 import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
@@ -46,19 +46,19 @@ const App = () => {
             )
           }
         />
-        <Route path="/car-details/:id" element={<CarDetails />} />
-        <Route path="/cars" element={<Cars />} />
+        <Route path="/vehicle-details/:id" element={<VehicleDetails />} />
+        <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/owner" element={<OwnerLayout />}>
           <Route index element={<OwnerDashboard />} />
-          <Route path="add-car" element={<AddCar />} />
-          <Route path="manage-cars" element={<OwnerManageCars />} />
-          <Route path="edit-car/:carId" element={<EditCar />} />
+          <Route path="add-vehicle" element={<AddVehicle />} />
+          <Route path="manage-vehicles" element={<OwnerManageVehicles />} />
+          <Route path="edit-vehicle/:vehicleId" element={<EditVehicle />} />
           <Route path="manage-bookings" element={<OwnerManageBookings />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="manage-cars" element={<AdminManageCars />} />
+          <Route path="manage-vehicles" element={<AdminManageVehicles />} />
           <Route path="manage-bookings" element={<AdminManageBookings />} />
         </Route>
       </Routes>

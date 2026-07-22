@@ -77,7 +77,7 @@ const Sidebar = () => {
               src={
                 link.path === location.pathname ? link.coloredIcon : link.icon
               }
-              alt="car icon"
+              alt="vehicle icon"
             />
             <span className="max-md:hidden">{link.name}</span>
             <div
