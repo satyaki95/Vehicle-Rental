@@ -88,6 +88,8 @@ const ManageVehicles = () => {
 
               <th className="p-3 font-medium max-md:hidden">Status</th>
 
+              <th className="p-3 font-medium">Approval Status</th>
+
               <th className="p-3 font-medium">Actions</th>
             </tr>
           </thead>
@@ -121,6 +123,14 @@ const ManageVehicles = () => {
                     className={`px-3 py-1 rounded-full text-xs ${vehicle.isAvailable ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"}`}
                   >
                     {vehicle.isAvailable ? "Available" : "Unavailable"}
+                  </span>
+                </td>
+
+                <td className="p-3">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs ${vehicle.isApproved ? "bg-green-100 text-green-500" : "bg-amber-100 text-amber-600"}`}
+                  >
+                    {vehicle.isApproved ? "Available" : "Pending"}
                   </span>
                 </td>
 

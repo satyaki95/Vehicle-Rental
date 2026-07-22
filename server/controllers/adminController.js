@@ -18,16 +18,101 @@ export const getAdminDashboardData = async (req, res) => {
     if (!ensureAdmin(req, res)) return;
 
     const vehicles = await Vehicle.find({});
+    const registeredUsers = await User.countDocuments({ role: { $ne: "admin" } });
     const bookings = await Booking.find({})
       .populate("vehicle user owner")
       .sort({ createdAt: -1 });
 
     const pendingBookings = await Booking.find({ status: "pending" });
     const completedBookings = await Booking.find({ status: "confirmed" });
+    const confirmedBookings = bookings.filter(
+      (booking) => booking.status === "confirmed",
+    );
     const totalConfirmedRevenue = bookings
       .filter((booking) => booking.status === "confirmed")
       .reduce((acc, booking) => acc + booking.price, 0);
     const monthlyRevenue = totalConfirmedRevenue * 0.1;
+
+    const bookingConversionRate = bookings.length
+      ? (confirmedBookings.length / bookings.length) * 100
+      : 0;
+
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const daysInCurrentMonth = Math.round(
+      (monthEnd - monthStart) / (1000 * 60 * 60 * 24),
+    );
+    const bookedDaysThisMonth = confirmedBookings.reduce((total, booking) => {
+      const pickup = new Date(booking.pickupDate);
+      const returned = new Date(booking.returnDate);
+      const clippedStart = Math.max(pickup.getTime(), monthStart.getTime());
+      const clippedEnd = Math.min(returned.getTime(), monthEnd.getTime());
+
+      if (clippedEnd <= clippedStart) return total;
+      return total + (clippedEnd - clippedStart) / (1000 * 60 * 60 * 24);
+    }, 0);
+    const vehicleUtilizationRate = vehicles.length
+      ? Math.min(
+          100,
+          (bookedDaysThisMonth / (vehicles.length * daysInCurrentMonth)) * 100,
+        )
+      : 0;
+
+    const bookingsByVehicle = bookings.reduce((groups, booking) => {
+      const vehicleId =
+        booking.vehicle?._id?.toString() || booking.vehicle?.toString();
+      if (!vehicleId) return groups;
+      groups[vehicleId] ??= [];
+      groups[vehicleId].push(booking);
+      return groups;
+    }, {});
+    const conflictingBookingIds = new Set();
+    Object.values(bookingsByVehicle).forEach((vehicleBookings) => {
+      vehicleBookings.forEach((booking, index) => {
+        const pickup = new Date(booking.pickupDate).getTime();
+        const returned = new Date(booking.returnDate).getTime();
+        for (
+          let nextIndex = index + 1;
+          nextIndex < vehicleBookings.length;
+          nextIndex += 1
+        ) {
+          const nextBooking = vehicleBookings[nextIndex];
+          const nextPickup = new Date(nextBooking.pickupDate).getTime();
+          const nextReturned = new Date(nextBooking.returnDate).getTime();
+          if (pickup <= nextReturned && returned >= nextPickup) {
+            conflictingBookingIds.add(booking._id.toString());
+            conflictingBookingIds.add(nextBooking._id.toString());
+          }
+        }
+      });
+    });
+    const bookingConflictRate = bookings.length
+      ? (conflictingBookingIds.size / bookings.length) * 100
+      : 0;
+
+    const rentalDurations = bookings
+      .map(
+        (booking) =>
+          (new Date(booking.returnDate) - new Date(booking.pickupDate)) /
+          (1000 * 60 * 60 * 24),
+      )
+      .filter((duration) => Number.isFinite(duration) && duration > 0);
+    const averageRentalDuration = rentalDurations.length
+      ? rentalDurations.reduce((total, duration) => total + duration, 0) /
+        rentalDurations.length
+      : 0;
+
+    const activeSince = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const monthlyActiveUsers = new Set(
+      bookings
+        .filter((booking) => booking.createdAt >= activeSince)
+        .map(
+          (booking) =>
+            booking.user?._id?.toString() || booking.user?.toString(),
+        )
+        .filter(Boolean),
+    ).size;
 
     res.json({
       success: true,
@@ -39,6 +124,12 @@ export const getAdminDashboardData = async (req, res) => {
         completedBookings: completedBookings.length,
         recentBookings: bookings.slice(0, 3),
         monthlyRevenue,
+        registeredUsers,
+        bookingConversionRate,
+        vehicleUtilizationRate,
+        bookingConflictRate,
+        averageRentalDuration,
+        monthlyActiveUsers,
       },
     });
   } catch (error) {
@@ -87,10 +178,25 @@ export const getAdminUsers = async (req, res) => {
   try {
     if (!ensureAdmin(req, res)) return;
 
-    const users = await User.find({ role: { $ne: "admin" } }).sort({
-      createdAt: -1,
-    });
-    res.json({ success: true, users });
+    const users = await User.find({ role: { $ne: "admin" } })
+      .select("-password")
+      .sort({ createdAt: -1 });
+    const vehicleCounts = await Vehicle.aggregate([
+      { $match: { owner: { $ne: null } } },
+      { $group: { _id: "$owner", vehicleCount: { $sum: 1 } } },
+    ]);
+    const vehicleCountByOwner = new Map(
+      vehicleCounts.map(({ _id, vehicleCount }) => [
+        _id.toString(),
+        vehicleCount,
+      ]),
+    );
+    const usersWithStats = users.map((user) => ({
+      ...user.toObject(),
+      vehicleCount: vehicleCountByOwner.get(user._id.toString()) || 0,
+    }));
+
+    res.json({ success: true, users: usersWithStats });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

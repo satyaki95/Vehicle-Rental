@@ -15,6 +15,7 @@ import OwnerManageBookings from "./pages/owner/ManageBookings";
 import AdminLayout from "./pages/admin/Layout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminManageVehicles from "./pages/admin/ManageVehicles";
+import AdminManageUsers from "./pages/admin/ManageUsers";
 import AdminManageBookings from "./pages/admin/ManageBookings";
 import Login from "./components/Login";
 import { Toaster } from "react-hot-toast";
@@ -59,6 +60,7 @@ const App = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="manage-vehicles" element={<AdminManageVehicles />} />
+          <Route path="manage-users" element={<AdminManageUsers />} />
           <Route path="manage-bookings" element={<AdminManageBookings />} />
         </Route>
       </Routes>

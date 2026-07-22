@@ -14,6 +14,12 @@ const Dashboard = () => {
     completedBookings: 0,
     recentBookings: [],
     monthlyRevenue: 0,
+    registeredUsers: 0,
+    bookingConversionRate: 0,
+    vehicleUtilizationRate: 0,
+    bookingConflictRate: 0,
+    averageRentalDuration: 0,
+    monthlyActiveUsers: 0,
   });
 
   const dashboardCards = [
@@ -37,6 +43,27 @@ const Dashboard = () => {
       value: data.completedBookings,
       icon: assets.listIconColored,
     },
+  ];
+
+  const analyticsCards = [
+    { title: "Registered Users", value: data.registeredUsers },
+    {
+      title: "Booking Conversion",
+      value: `${data.bookingConversionRate.toFixed(1)}%`,
+    },
+    {
+      title: "Vehicle Utilization",
+      value: `${data.vehicleUtilizationRate.toFixed(1)}%`,
+    },
+    {
+      title: "Booking Conflicts",
+      value: `${data.bookingConflictRate.toFixed(1)}%`,
+    },
+    {
+      title: "Average Rental Duration",
+      value: `${data.averageRentalDuration.toFixed(1)} days`,
+    },
+    { title: "Monthly Active Users", value: data.monthlyActiveUsers },
   ];
 
   const fetchDashboardData = async () => {
@@ -78,6 +105,24 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-lg font-medium">Platform Analytics</h2>
+        <p className="text-gray-500">
+          Key growth, utilization, and booking health metrics
+        </p>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
+          {analyticsCards.map((card) => (
+            <div
+              key={card.title}
+              className="p-4 rounded-md border border-borderColor"
+            >
+              <h3 className="text-xs text-gray-500">{card.title}</h3>
+              <p className="text-lg font-semibold mt-2">{card.value}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex flex-wrap items-start gap-6 mb-8 w-full">

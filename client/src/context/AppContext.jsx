@@ -37,6 +37,7 @@ export const AppProvider = ({ children }) => {
         setIsOwner(false);
         setIsAdmin(false);
         localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         axios.defaults.headers.common["Authorization"] = "";
         navigate("/");
       }
@@ -46,6 +47,7 @@ export const AppProvider = ({ children }) => {
       setIsOwner(false);
       setIsAdmin(false);
       localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       axios.defaults.headers.common["Authorization"] = "";
       navigate("/");
     } finally {
@@ -67,6 +69,7 @@ export const AppProvider = ({ children }) => {
   // Function to log out the user
   const logout = () => {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setToken(null);
     setUser(null);
     setIsOwner(false);
@@ -76,9 +79,12 @@ export const AppProvider = ({ children }) => {
     toast.success("You have been logged out");
   };
 
-  // UseEffect to retrieve the token from localStorage
+  // Session storage keeps authentication alive through refreshes only.
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+    const storedToken = sessionStorage.getItem("token");
+
+    // Remove tokens created by older versions that persisted sessions forever.
+    localStorage.removeItem("token");
 
     if (storedToken) {
       setToken(storedToken);

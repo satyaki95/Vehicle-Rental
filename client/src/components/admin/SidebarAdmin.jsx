@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 const adminMenuLinks = [
   { name: "Dashboard", path: "/admin", icon: assets.dashboardIcon, coloredIcon: assets.dashboardIconColored },
   { name: "Manage Vehicles", path: "/admin/manage-vehicles", icon: assets.carIcon, coloredIcon: assets.carIconColored },
+  { name: "Manage Users", path: "/admin/manage-users", icon: assets.users_icon, coloredIcon: assets.users_icon },
   { name: "Manage Bookings", path: "/admin/manage-bookings", icon: assets.listIcon, coloredIcon: assets.listIconColored },
 ];
 

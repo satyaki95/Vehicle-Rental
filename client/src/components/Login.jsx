@@ -28,21 +28,21 @@ const Login = () => {
           setIsAdmin(false);
           navigate("/owner");
           setToken(data.token);
-          localStorage.setItem("token", data.token);
+          sessionStorage.setItem("token", data.token);
           setShowLogin(false);
         } else if (data.role === "admin") {
           setIsOwner(false);
           setIsAdmin(true);
           navigate("/admin");
           setToken(data.token);
-          localStorage.setItem("token", data.token);
+          sessionStorage.setItem("token", data.token);
           setShowLogin(false);
         } else {
           setIsOwner(false);
           setIsAdmin(false);
           navigate("/");
           setToken(data.token);
-          localStorage.setItem("token", data.token);
+          sessionStorage.setItem("token", data.token);
           setShowLogin(false);
         }
       } else {
