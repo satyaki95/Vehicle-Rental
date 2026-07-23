@@ -18,7 +18,9 @@ export const getAdminDashboardData = async (req, res) => {
     if (!ensureAdmin(req, res)) return;
 
     const vehicles = await Vehicle.find({});
-    const registeredUsers = await User.countDocuments({ role: { $ne: "admin" } });
+    const registeredUsers = await User.countDocuments({
+      role: { $ne: "admin" },
+    });
     const bookings = await Booking.find({})
       .populate("vehicle user owner")
       .sort({ createdAt: -1 });
@@ -67,6 +69,7 @@ export const getAdminDashboardData = async (req, res) => {
       groups[vehicleId].push(booking);
       return groups;
     }, {});
+
     const conflictingBookingIds = new Set();
     Object.values(bookingsByVehicle).forEach((vehicleBookings) => {
       vehicleBookings.forEach((booking, index) => {

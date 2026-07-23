@@ -256,6 +256,7 @@ const AddVehicle = () => {
                 setVehicle({ ...vehicle, transmission: e.target.value })
               }
               value={vehicle.transmission}
+              required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
             >
               <option value="">Select a transmission</option>
@@ -271,6 +272,7 @@ const AddVehicle = () => {
                 setVehicle({ ...vehicle, fuel_type: e.target.value })
               }
               value={vehicle.fuel_type}
+              required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
             >
               <option value="">Select a fuel type</option>
@@ -305,11 +307,12 @@ const AddVehicle = () => {
               setVehicle({ ...vehicle, location: e.target.value })
             }
             value={vehicle.location}
+            required
             className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
           >
             <option value="">Select a location</option>
             <option value="Mumbai">Mumbai</option>
-            <option value="Delhi ">Delhi </option>
+            <option value="Delhi">Delhi </option>
             <option value="Bangalore">Bangalore</option>
             <option value="Hyderabad">Hyderabad</option>
             <option value="Calcutta">Calcutta</option>

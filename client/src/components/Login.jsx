@@ -78,7 +78,6 @@ const Login = () => {
               <option value="">Select Role</option>
               <option value="user">User</option>
               <option value="owner">Owner</option>
-              <option value="owner">Admin</option>
             </select>
             <p>Name</p>
             <input
