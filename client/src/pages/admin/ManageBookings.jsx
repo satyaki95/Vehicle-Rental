@@ -54,7 +54,7 @@ const ManageBookings = () => {
             <tr>
               <th className="p-3 font-medium">Vehicle</th>
               <th className="p-3 font-medium max-md:hidden">User</th>
-              <th className="p-3 font-medium">Date Range</th>
+              <th className="p-3 font-medium">Pickup Date & Time</th>
               <th className="p-3 font-medium">Total</th>
               <th className="p-3 font-medium">Actions</th>
             </tr>
@@ -82,8 +82,13 @@ const ManageBookings = () => {
                     {booking.user?.name || "Unknown"}
                   </td>
                   <td className="p-3">
-                    {booking.pickupDate?.split("T")[0]} to{" "}
-                    {booking.returnDate?.split("T")[0]}
+                    <div>{booking.pickupDate?.split("T")[0] || "N/A"}</div>
+                    <div className="text-xs text-gray-400">
+                      Pickup: {booking.pickupDate?.split("T")[1]?.slice(0, 5) || "N/A"}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      Return: {booking.returnDate?.split("T")[0] || "N/A"}
+                    </div>
                   </td>
                   <td className="p-3">
                     {currency}
