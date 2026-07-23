@@ -95,6 +95,7 @@ const AddVehicle = () => {
               id="vehicle-image"
               accept="image/*"
               hidden
+              required
               onChange={(e) => setImage(e.target.files[0])}
             />
           </label>
@@ -168,6 +169,7 @@ const AddVehicle = () => {
             <input
               type="number"
               placeholder="700"
+              required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
               value={vehicle.pricePerWeek}
               onChange={(e) =>
@@ -180,6 +182,7 @@ const AddVehicle = () => {
             <input
               type="number"
               placeholder="2500"
+              required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
               value={vehicle.pricePerMonth}
               onChange={(e) =>
@@ -225,6 +228,7 @@ const AddVehicle = () => {
                 setVehicle({ ...vehicle, category: e.target.value })
               }
               value={vehicle.category}
+              required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none"
             >
               {vehicle.vehicleType === "4W" ? (

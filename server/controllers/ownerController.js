@@ -212,7 +212,7 @@ export const getDashBoardData = async (req, res) => {
     const monthlyRevenue = bookings
       .slice()
       .filter((booking) => booking.status === "confirmed")
-      .reduce((acc, booking) => acc + booking.price, 0);
+      .reduce((acc, booking) => acc + booking.price, 0) * 0.9;
 
     const dashboardData = {
       totalVehicles: vehicles.length,
