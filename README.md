@@ -1,1 +1,1 @@
-Deployment Link - https://vehicle-rental-sooty.vercel.app/
+Deployment Link - https://vehicle-rental-one-blush.vercel.app/
