@@ -1,1 +1,1 @@
-Deployment Link - https://vehicle-rental-mocha.vercel.app/
+Deployment Link - https://vehicle-rental-sooty.vercel.app/
